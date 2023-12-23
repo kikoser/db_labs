@@ -279,3 +279,509 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 ```
 
 - RESTfull сервіс для управління даними
+
+## Сутності
+
+### attributes
+```java
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
+@Table(name = "attributes")
+public class attributes {
+
+    @Id
+    @GeneratedValue
+    private String id;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "value", nullable = false)
+    private String value;
+    @Column(name = "attributeType", nullable = false)
+    private String attributeType;
+
+    @Column(name = "name", nullable = false )
+    private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "Permissions_id")
+    private permissions permissions;
+
+}
+```
+
+### data
+```java
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
+@Table(name = "data")
+public class data {
+    @Id
+    @GeneratedValue
+    private String id;
+
+    @Column(name = "size", nullable = false)
+    private Double size;
+
+    @Column(name = "date", nullable = false )
+    private LocalDateTime date;
+
+    @Column(name = "dataType", nullable = false)
+    private String dataType;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "tags")
+    private String tags;
+}
+```
+### datafolder
+```java
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
+@Table(name = "datafolder")
+public class datafolder {
+
+    @Id
+    @GeneratedValue
+    private String id;
+
+    @Column(name = "descriotion")
+    private String description;
+
+    @Column(name = "date", nullable = false)
+    private LocalDateTime date;
+
+    @Column(name = "owner", nullable = false)
+    private String owner;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+
+}
+```
+
+### datafolder_has_datalink
+```java
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
+@Table(name = "datafolder_has_datalink")
+public class datafolder_has_datalink {
+    @Id
+    @GeneratedValue
+    private Integer id;
+    @ManyToOne
+    @JoinColumn(name = "DataFolder_id")
+    private datafolder datafolder;
+
+    @ManyToOne
+    @JoinColumn(name = "DataLink_link")
+    private datalink datalink;
+}
+```
+
+### datalink
+```java
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
+@Table(name = "datalink")
+public class datalink {
+    @Id
+    @GeneratedValue
+    private String link;
+}
+```
+
+### datalink_has_data
+```java
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
+@Table(name = "datalink_has_data")
+public class datalink_has_data {
+    @Id
+    @GeneratedValue
+    private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "DataLink_link")
+    private datalink datalink;
+
+    @ManyToOne
+    @JoinColumn(name = "Data_id")
+    private data data;
+
+}
+```
+
+### permissions
+```java
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
+@Table(name = "permissions")
+public class permissions {
+    @Id
+    @GeneratedValue
+    private String id;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "level", nullable = false)
+    private Integer level;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+}
+```
+
+### search
+```java
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
+@Table(name = "search")
+public class search {
+
+    @Id
+    @GeneratedValue
+    private String id;
+
+    @Column(name = "status", nullable = false)
+    private String status;
+
+    @Column(name = "date", nullable = false)
+    private LocalDateTime date;
+
+    @Column(name = "searchType", nullable = false)
+    private String searchType;
+
+    @Column(name = "target")
+    private String target;
+
+    @Column(name = "parameters")
+    private String parameters;
+
+}
+```
+
+### search_has_datalink
+```java
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
+@Table(name = "search_has_datalink")
+public class search_has_datalink {
+    @Id
+    @GeneratedValue
+    private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "Search_id")
+    private search search;
+
+    @ManyToOne
+    @JoinColumn(name = "DataLink_link")
+    private datalink datalink;
+}
+```
+
+### user
+```java
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
+@Table(name = "user")
+public class user {
+    @Id
+    @GeneratedValue
+    private String id;
+
+    @Column(name = "username", nullable = false)
+    private String username;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "UserAttributes_UserID")
+    private userattributes userattributes;
+
+    @Column(name = "Request_id", nullable = false)
+    private String Request_id;
+
+    @ManyToOne
+    @JoinColumn(name = "DataFolder_id")
+    private datafolder datafolder;
+}
+```
+
+### user_has_search
+```java
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
+@Table(name = "user_has_search")
+public class user_has_search {
+    @Id
+    @GeneratedValue
+    private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "User_id")
+    private user user;
+
+    @ManyToOne
+    @JoinColumn(name = "Search_id")
+    private search search;
+}
+```
+
+### userattributes
+```java
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
+@Table(name = "userattributes")
+public class userattributes {
+
+    @Id
+    @GeneratedValue
+    private String UserID;
+
+    @ManyToOne
+    @JoinColumn(name = "AttributeID")
+    private attributes attributes;
+
+}
+```
+
+
+## Репозиторії
+
+### repoAttributes
+```java
+import com.example.demolab6.model.attributes;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface repoAttributes extends JpaRepository<attributes, String> {
+}
+```
+
+### repoData
+```java
+import com.example.demolab6.model.data;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface repoData extends JpaRepository<data, String> {
+}
+```
+
+### repoDataFolder
+```java
+import com.example.demolab6.model.datafolder;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface repoDataFolder extends JpaRepository<datafolder, String> {
+}
+```
+
+### repoDataForder_Has_DataLink
+```java
+import com.example.demolab6.model.datafolder_has_datalink;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface repoDataForder_Has_DataLink extends JpaRepository<datafolder_has_datalink, Integer> {
+}
+```
+
+### repoDataLink
+```java
+import com.example.demolab6.model.datalink;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface repoDataLink extends JpaRepository<datalink, String> {
+}
+```
+
+### repoDataLink_Has_Data 
+```java
+import com.example.demolab6.model.datalink_has_data;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface repoDataLink_Has_Data extends JpaRepository<datalink_has_data, Integer> {
+}
+```
+
+### repoPermissions
+```java
+import com.example.demolab6.model.permissions;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface repoPermissions extends JpaRepository<permissions, String> {
+}
+```
+
+### repoSearch
+```java
+import com.example.demolab6.model.search;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface repoSearch extends JpaRepository<search, String> {
+}
+```
+
+### repoSearch_Has_DataLink
+```java
+import com.example.demolab6.model.search_has_datalink;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface repoSearch_Has_DataLink extends JpaRepository<search_has_datalink, Integer> {
+}
+```
+
+### repoUser
+```java
+import com.example.demolab6.model.user;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface repoUser extends JpaRepository<user, String> {
+}
+```
+
+### repoUser_Has_Search
+```java
+import com.example.demolab6.model.user_has_search;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface repoUser_Has_Search extends JpaRepository<user_has_search, Integer> {
+}
+```
+
+### repoUserAttributes
+```java
+import com.example.demolab6.model.userattributes;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface repoUserAttributes extends JpaRepository<userattributes, String> {
+}
+```
